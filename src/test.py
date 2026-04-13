@@ -7,6 +7,10 @@ data = pd.read_excel('superstore_sales.xlsx')
 print("Number of missing values by column is: ")
 print(data.isnull().sum())
 
+#Cleaning the duplicates and empty fields
+data.drop_duplicates()
+data['profit'] = data['profit'].fillna(0)
+
 #Grouping the sales data by month/year
 data['month_year'] = data['order_date'].apply(lambda x: x.strftime('%Y-%m'))
 data_trend = data.groupby('month_year').sum(numeric_only=True)['sales'].reset_index()
@@ -27,3 +31,15 @@ print(sales[:10])
 profit = pd.DataFrame(data.groupby(['category', 'sub_category']).sum(numeric_only=True)['profit'])
 profit = profit.sort_values('profit', ascending=False)
 print(profit)
+
+#Highlighting the dead stock in last 3 months
+last_date = pd.to_datetime(data['month_year'].max())
+start = pd.to_datetime(last_date - pd.DateOffset(months=3))
+data['month_year'] = pd.to_datetime(data['month_year'])
+quarter = data[(data['month_year'] >= start) & (data['month_year'] < last_date)].groupby(['month_year', 'sales', 'product_name']).sum(numeric_only=True)
+quarter = quarter.sort_values('sales', ascending=True)
+print(quarter[:10])
+
+#Pivot table
+pivot = data.pivot_table(index='market', columns='category', values='profit', aggfunc='sum')
+print(pivot)
