@@ -7,6 +7,7 @@ class BookSpider(scrapy.Spider):
     start_urls = ["https://books.toscrape.com"]
 
     def parse(self, response):
+        #Scraping each book by url, title and price
         for book in response.css("article_product_pod"):
             item = BooksItem()
             item["url"] = book.css("h3 > a::attr(href)").get()
@@ -14,6 +15,7 @@ class BookSpider(scrapy.Spider):
             item["price"] = book.css(".price_color::text").get()
             yield item
 
+        #Pagination
         next_page = response.css("li.next > a::attr(href)").get()
         if next_page:
             next_page_url = response.urljoin(next_page)
