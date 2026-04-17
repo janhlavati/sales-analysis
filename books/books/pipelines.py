@@ -6,7 +6,10 @@
 
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
+import pymongo
 
+class MongoPipeline:
+    COLLECTION_NAME = "books"
 
 class BooksPipeline:
     def process_item(self, item, spider):
