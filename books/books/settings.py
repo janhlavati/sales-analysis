@@ -7,6 +7,10 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
+ITEM_PIPELINES = {
+    "books.pipelines.MongoPipeline": 300,
+}
+
 BOT_NAME = "books"
 
 SPIDER_MODULES = ["books.spiders"]
