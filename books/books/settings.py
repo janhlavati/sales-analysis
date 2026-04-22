@@ -1,5 +1,5 @@
 ITEM_PIPELINES = {
-    "books.pipelines.MongoPipeline": 300,
+    "books.pipelines.MongoPipeline": 300
 }
 
 BOT_NAME = "books"
